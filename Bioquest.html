@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Bioquest</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f2f7fc;--card:#fff;--tx:#0b1f3a;--mut:#56667a;--nv:#0b2a55;--lb:#bcdcf5;--ac:#1f5fa8;--bd:#c9d6e3;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#0b1626;--card:#14243a;--tx:#eef4fb;--mut:#a9b8c9;--nv:#8fc0ec;--lb:#1f3a5c;--ac:#6fb0ee;--bd:#2c4260}}
+:root[data-theme=dark]{--bg:#0b1626;--card:#14243a;--tx:#eef4fb;--mut:#a9b8c9;--nv:#8fc0ec;--lb:#1f3a5c;--ac:#6fb0ee;--bd:#2c4260}
+html{scroll-behavior:smooth;scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.5 Lato,Legend,system-ui,sans-serif}
+h1,h2,h3{font-family:"Cinzel Decorative",Georgia,serif;color:var(--nv);margin:.3em 0}
+a{color:var(--ac)}
+:focus-visible{outline:3px solid var(--ac);outline-offset:2px}
+.skip{position:absolute;left:-999px}.skip:focus{left:8px;top:8px;background:#fff;padding:6px;z-index:9}
+nav{display:flex;gap:6px;flex-wrap:wrap;align-items:center;padding:10px 16px;background:var(--nv);position:sticky;top:0;z-index:5}
+nav b{font-family:"Cinzel Decorative",serif;color:#fff;margin-right:auto;font-size:1.2rem}
+nav button{background:transparent;color:#fff;border:1px solid #ffffff66;border-radius:8px;padding:6px 12px;font:inherit;cursor:pointer}
+nav button[aria-current=page]{background:var(--lb);color:#0b2a55}
+main{max-width:1000px;margin:auto;padding:16px}
+button.b{background:var(--nv);color:#fff;border:0;border-radius:999px;padding:10px 22px;font:700 1rem Lato,sans-serif;cursor:pointer}
+button.b:disabled{opacity:.45;cursor:not-allowed}
+button.b.s{background:var(--card);color:var(--nv);border:2px solid var(--nv)}
+.hero{min-height:80vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;gap:14px;background:linear-gradient(#e3f1fc,#bcdcf5);border-radius:16px;padding:24px;color:#0b2a55}
+.hero h1{font-size:clamp(2.4rem,9vw,4.5rem);color:#0b2a55}
+.hero p{max-width:520px;font-size:.95rem;margin:0}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:24px}
+@media(max-width:640px){.cols{grid-template-columns:1fr}}
+.tool{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:20px;text-align:center}
+.tool .ic{font-size:3.5rem;background:none;border:0;cursor:pointer}
+.tool a{display:block;font-weight:700;text-decoration:underline;font-size:1.2rem;color:var(--nv);cursor:pointer}
+.stage{position:relative;height:270px;border-radius:14px;overflow:hidden;border:1px solid var(--bd)}
+.lab{background:linear-gradient(#f4f9fd,#bcdcf5)}
+.plant{background:linear-gradient(#e2f0d8,#86b985)}
+.ocean{background:linear-gradient(#6fb6e0,#0d4678)}
+.data{background:repeating-linear-gradient(90deg,#1b1436 0 22px,#2b2152 22px 26px,#3c2f73 26px 30px);color:#fff}
+.ground{position:absolute;bottom:0;left:0;right:0;height:50px;background:#9aa6b4}
+.spr{position:absolute;bottom:50px;font-size:3.4rem;transition:left .15s}
+.co{position:absolute;right:4%;bottom:50px;font-size:6rem;text-align:center;color:#0b2a55}.co small{display:block;font-size:.8rem;font-weight:700}
+.bubble{position:absolute;background:#fff;color:#0b1f3a;border-radius:16px;padding:12px 16px;max-width:min(520px,78%);box-shadow:0 2px 8px #0003}
+.pad{display:flex;gap:10px;justify-content:center;margin:10px}
+.rooms{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:14px 0}
+.room{background:var(--card);border:2px solid var(--nv);border-radius:12px;padding:16px 8px;font:700 1rem Lato,sans-serif;color:var(--tx);cursor:pointer}
+.room span{display:block;font-size:2.4rem}
+.pop{background:var(--card);border:2px solid var(--ac);border-radius:12px;padding:14px;margin:10px 0}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:10px 0}
+.role{background:var(--card);border:2px solid var(--bd);border-radius:10px;padding:8px 2px;text-align:center;font:.78rem Lato,sans-serif;color:var(--tx);cursor:pointer}
+.role span{display:block;font-size:1.8rem}.role.on{border-color:var(--ac);background:var(--lb)}
+.ch{display:block;width:100%;text-align:left;margin:8px 0;padding:12px;border-radius:10px;border:2px solid var(--bd);background:var(--card);color:var(--tx);font:1rem Lato,sans-serif;cursor:pointer}
+.ch:hover,.ch:focus-visible{border-color:var(--ac);background:var(--lb)}
+.note{font-size:.85rem;color:var(--mut)}
+.bar{height:12px;border-radius:6px;background:var(--lb);overflow:hidden}.bar i{display:block;height:100%;background:var(--ac)}
+.mapw{display:grid;grid-template-columns:230px 1fr;gap:16px}
+@media(max-width:760px){.mapw{grid-template-columns:1fr}}
+fieldset{border:1px solid var(--bd);border-radius:10px;margin:0 0 10px;background:var(--card)}
+fieldset label{display:block;font-size:.9rem}
+svg.map{width:100%;background:var(--card);border:1px solid var(--bd);border-radius:12px}
+.cty{fill:var(--lb);stroke:var(--nv);stroke-width:1.5;cursor:pointer}.cty.sel{fill:var(--ac)}
+.cl{font:600 8.5px Lato,sans-serif;fill:var(--tx);pointer-events:none;text-anchor:middle}
+.pin{cursor:pointer}.pin path{fill:#c62828;stroke:#fff;stroke-width:1}
+#box{background:var(--card);border:2px solid #c62828;border-radius:10px;padding:10px;margin-top:10px}
+ul.res{padding-left:18px;font-size:.9rem}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.spr{transition:none}}
+</style></head><body>
+<a class="skip" href="#app">Skip to content</a>
+<nav aria-label="Main"><b>Bioquest</b>
+<button data-v="home" aria-current="page">Home</button><button data-v="game">Build-A-Biotech Startup</button><button data-v="map">Map of Opportunities</button></nav>
+<main id="app">
+<section id="home">
+ <div class="hero"><h1>Bioquest</h1><p>Discover your path in biotechnology through interactive exploration and local opportunity tracking</p>
+ <button class="b" id="gs">Get Started</button></div>
+ <div class="cols" id="tools">
+  <div class="tool"><button class="ic" data-v="game" aria-label="Open Build-A-Biotech Startup">🧬</button><a tabindex="0" role="link" data-v="game">Build-A-Biotech Startup</a><p>Walk into a startup, build a team, and play sector scenarios to discover which biotech strengths fit you.</p></div>
+  <div class="tool"><button class="ic" data-v="map" aria-label="Open Map of Opportunities">📍</button><a tabindex="0" role="link" data-v="map">Map of Opportunities</a><p>Explore New Jersey's 21 counties for internships, volunteering, programs, and jobs.</p></div>
+ </div>
+</section>
+
+<section id="game" hidden>
+ <h2>Build-A-Biotech Startup</h2>
+ <div id="gs2" aria-live="polite"></div>
+</section>
+
+<section id="map" hidden>
+ <h2>Map of Opportunities</h2>
+ <p class="note">Schematic tile map of New Jersey's 21 counties. Click a county or use the filters; red pins open a box with the workplace name and link. Sample entries are placeholders until the verified research is added.</p>
+ <div class="mapw"><div id="filters"></div>
+ <div><svg class="map" id="svg" viewBox="0 0 400 520" role="group" aria-label="Map of New Jersey counties"></svg>
+ <div id="box" hidden></div><h3>Matching opportunities</h3><ul class="res" id="res"></ul></div></div>
+</section>
+</main>
+
+<script>
+const $=s=>document.querySelector(s);
+function show(v){["home","game","map"].forEach(x=>$("#"+x).hidden=x!=v);document.querySelectorAll("nav button").forEach(b=>b.toggleAttribute("aria-current",b.dataset.v==v)||(b.removeAttribute("aria-current")));
+ document.querySelectorAll("nav button").forEach(b=>{if(b.dataset.v==v)b.setAttribute("aria-current","page")});
+ if(v=="game"&&!G.init){G.init=1;rg()}if(v=="map"&&!M.init){M.init=1;mapInit()}scrollTo(0,0)}
+document.addEventListener("click",e=>{const t=e.target.closest("[data-v]");if(t)show(t.dataset.v)});
+document.addEventListener("keydown",e=>{if(e.key=="Enter"&&e.target.matches(".tool a"))show(e.target.dataset.v)});
+$("#gs").onclick=()=>$("#tools").scrollIntoView({behavior:"smooth"});
+
+/* ---------- GAME DATA ---------- */
+const EM=["🔬","🧪","🧬","📊","⚗️","🩺","📋","🧫","💻","🛡️","📝","⚙️","🌐","🔍","🧑‍🔬","📈"],
+SK=["Lab technique & precision","Data analysis","Problem-solving","Clear communication","Attention to detail","Teamwork"],
+ED=["Associate degree or certificate","Bachelor's in biology or chemistry","Bachelor's plus certification","Master's degree preferred"],
+TR=["Innovation & Curiosity","Decision-Making","Teamwork & Problem-Solving","Communication, Business & Ethics","Patience, Research & Data"],
+TD=["You love new ideas and asking \"what if?\"","You weigh options and make confident calls","You solve problems best with other people","You explain ideas clearly and think about ethics and impact","You are careful, thorough, and trust the evidence"],
+TC=["R&D Scientist, Biotech Entrepreneur · Majors: Biotechnology, Bioengineering","Project Manager, Process Engineer · Majors: Biochemical Engineering, Industrial Management","Clinical Research Coordinator, Lab Manager · Majors: Biology, Public Health","Regulatory Affairs Specialist, Medical Writer, Bioethicist · Majors: Life Sciences, Business, Communications","Biostatistician, Bioinformatician, QC Analyst · Majors: Biochemistry, Data Science, Chemistry"],
+CS=[[["Test a bold new idea right away",[3,1,0,0,1]],["Gather the team and split up the work",[0,1,3,1,0]],["Explain the situation to stakeholders first",[0,1,1,3,0]],["Review all the data before acting",[1,1,0,0,3]]],
+[["Make the call quickly and adjust later",[1,3,0,1,0]],["Ask everyone for ideas and combine them",[1,0,3,1,0]],["Write a clear plan listing the risks",[0,1,0,3,1]],["Run another careful experiment to be sure",[0,0,1,0,3]]],
+[["Wonder \"what if?\" and explore a side question",[3,0,1,0,1]],["Weigh the options and pick the best one",[0,3,0,1,1]],["Pair up with a teammate to troubleshoot",[1,0,3,0,1]],["Document everything and share it ethically",[0,0,1,3,1]]]];
+const S=[
+{n:"Pharma / Healthcare",e:"💊",bg:"lab",m:"Dr. Rivera",me:"👩‍⚕️",d:"Develops medicines, vaccines and therapies that treat patients.",p:"vaccines, antibodies, gene therapies",
+r:"Clinical Research Coordinator,Medicinal Chemist,Pharmacologist,Toxicologist,Formulation Scientist,Process Engineer,Biostatistician,Medical Science Liaison,Genetic Counselor,Bioinformatician,QC Analyst,Cell Culture Technician,Pharmacovigilance Specialist,Drug Safety Associate,Clinical Data Manager,Lab Manager",
+q:["A promising drug candidate shows unexpected side effects in testing.","Your team must choose between two formulations before a deadline.","A patient group asks how your new therapy works."]},
+{n:"Regulatory",e:"📋",bg:"lab",m:"Ms. Okafor",me:"🧑‍💼",d:"Keeps products safe, ethical and legal from lab to market.",p:"approval filings, safety reports, product labels",
+r:"Regulatory Affairs Specialist,Quality Assurance Auditor,Compliance Officer,Clinical Trial Monitor,Medical Writer,Patent Analyst,Bioethicist,Validation Engineer,Document Control Specialist,Labeling Specialist,Health Policy Analyst,Biosafety Officer,GMP Inspector,Risk Manager,Submissions Manager,Technology Transfer Specialist",
+q:["An audit finds a gap in your documentation.","A new regulation changes how you label products.","Two departments disagree on a safety report."]},
+{n:"Marine",e:"🐠",bg:"ocean",m:"Captain Lee",me:"🧑‍✈️",d:"Uses ocean life and ecosystems to make food, materials and medicines.",p:"algae supplements, sustainable seafood, marine-derived compounds",
+r:"Marine Biologist,Aquaculture Technician,Marine Biotechnologist,Oceanographer,Fisheries Scientist,Coral Researcher,Marine Microbiologist,Algae Cultivation Specialist,Water Quality Analyst,Marine Natural Products Chemist,ROV Operator,Conservation Biologist,Hatchery Manager,Marine Toxicologist,Seafood Safety Inspector,Ocean Data Analyst",
+q:["Algae samples from the coast show a surprising compound.","Water quality at the fish farm suddenly drops.","A community asks if your project could harm local reefs."]},
+{n:"Detection",e:"🧫",bg:"data",m:"Dr. Chen",me:"🧑‍🔬",d:"Builds tests and tools that find genes, germs and other biological signals.",p:"diagnostic tests, DNA sequencing, biosensors",
+r:"Diagnostic Assay Developer,Forensic DNA Analyst,PCR Technician,Gel Electrophoresis Technician,Sequencing Specialist,Biosensor Engineer,Clinical Lab Scientist,Genomic Data Analyst,Biosecurity Analyst,Mass Spectrometry Specialist,Microbiologist,Molecular Diagnostics Scientist,Medical Device Tester,Epidemiologist,Lab Information Systems Analyst,Pathogen Surveillance Specialist",
+q:["A rapid test gives inconsistent results.","A sequencing run flags an unknown pathogen.","Your gel results look different from the expected pattern."]},
+{n:"Agricultural / Environmental",e:"🌱",bg:"plant",m:"Prof. Alvarez",me:"🧑‍🌾",d:"Improves crops and cleans up the environment using biology.",p:"resilient crops, biofuels, bioremediation tools",
+r:"Plant Geneticist,Crop Scientist,Soil Microbiologist,Agricultural Engineer,Environmental Scientist,Bioremediation Specialist,Food Scientist,Entomologist,Greenhouse Technician,Biofuel Researcher,Ecologist,Seed Technologist,Sustainability Analyst,Water Resource Specialist,Agronomist,Field Research Technician",
+q:["A drought-tolerant crop trial yields mixed results.","Soil bacteria could clean a polluted field.","Farmers worry about a new engineered seed."]}];
+const G={step:"walk",x:4,sec:null,team:[],qi:0,sc:[0,0,0,0,0]};
+
+function say(who,txt,pos="left:20px;top:20px"){return `<div class="bubble" style="${pos}">${who?`<b>${who}:</b> `:""}${txt}</div>`}
+function rg(){const el=$("#gs2"),st=G.step;let h="";
+ if(st=="walk")h=`<div class="stage lab"><div class="ground"></div><div class="co">🏢<small>Biotech Company</small></div><div class="spr" id="pl" style="left:${G.x}%" aria-label="Player">🧑‍🎓</div>${say("","Use the ← → arrow keys (or buttons) to walk to the company.")}</div><div class="pad"><button class="b s" id="bl" aria-label="Walk left">◀</button><button class="b s" id="br" aria-label="Walk right">▶</button></div>`;
+ if(st=="greet")h=`<div class="stage lab"><div class="ground"></div><div class="co">🏢</div><div class="spr" style="right:22%">🧑‍💼</div>${say("Director","Welcome! Thank you for joining us on our special tour.")}</div><div class="pad"><button class="b" id="play">Play</button></div>`;
+ if(st=="rooms")h=`<p>Choose a room. Hover, focus or tap a sector to meet its manager.</p><div class="rooms">${S.map((s,i)=>`<button class="room" data-r="${i}"><span>${s.e}</span>${s.n}</button>`).join("")}</div><div id="mp"></div>`;
+ if(st=="team"){const s=S[G.sec];h=`<div class="stage ${s.bg}" style="height:150px"><div class="spr" style="left:3%">${s.me}</div>${say(s.m,"Your mission: make a team for your startup.","left:90px;top:18px")}</div>
+ <p class="note">There are many kinds of specialists. For now we will only choose 6 members.</p><h3 id="tc">YOUR TEAM: ${G.team.length}/6</h3>
+ <div class="grid">${s.r.split(",").map((r,i)=>`<button class="role ${G.team.includes(i)?"on":""}" data-i="${i}"><span>${EM[i]}</span>${r}</button>`).join("")}</div><div id="rd" class="pop">Hover over, focus, or tap a role to see what they do.</div>
+ <button class="b" id="go" ${G.team.length<6?"disabled":""}>Start scenarios</button>`}
+ if(st=="quiz"){const s=S[G.sec],c=CS[G.qi];h=`<div class="stage ${s.bg}"><div class="ground" style="opacity:.3"></div><div class="spr" style="left:4%">${s.me}</div>${say(s.m,s.q[G.qi],"left:100px;top:18px")}</div><p class="note">Scenario ${G.qi+1} of 3 · there are no wrong answers</p>${c.map((a,i)=>`<button class="ch" data-c="${i}">${a[0]}</button>`).join("")}`}
+ if(st=="end"){const o=G.sc.map((v,i)=>[v,i]).sort((a,b)=>b[0]-a[0]),mx=Math.max(...G.sc,1),s=S[G.sec];
+ h=`<h2>🎉 Congratulations!</h2><p>You finished the ${s.n} world. Your team: ${G.team.map(i=>s.r.split(",")[i]).join(", ")}.</p><h3>Your biotech profile</h3>${G.sc.map((v,i)=>`<div>${TR[i]}</div><div class="bar" role="img" aria-label="${TR[i]} ${v}"><i style="width:${v/mx*100}%"></i></div>`).join("")}
+ <p>You tended to choose actions that show <b>${TR[o[0][1]]}</b> and <b>${TR[o[1][1]]}</b>. ${TD[o[0][1]]}.</p><div class="pop"><b>You may enjoy exploring:</b><ul><li>${TC[o[0][1]]}</li><li>${TC[o[1][1]]}</li></ul></div>
+ <p class="note">Disclaimer: this does not predict your future career. Results are based on the choices you made in the game and are meant to help you explore career options.</p>
+ <button class="b" id="again">Play again</button> <button class="b s" data-v="map">Find local opportunities</button>`}
+ el.innerHTML=h;const f=el.querySelector("button");if(f&&st!="walk"&&st!="rooms")f.focus({preventScroll:true})}
+function walk(d){if(G.step!="walk"||$("#game").hidden)return;G.x=Math.min(80,Math.max(2,G.x+d));if(G.x>=70){G.step="greet";rg()}else $("#pl").style.left=G.x+"%"}
+document.addEventListener("keydown",e=>{if($("#game").hidden||G.step!="walk")return;if(e.key=="ArrowRight"){e.preventDefault();walk(5)}if(e.key=="ArrowLeft"){e.preventDefault();walk(-5)}});
+function pickRoom(i){const s=S[i];$("#mp").innerHTML=`<div class="pop"><div style="font-size:2.4rem">${s.me}</div><b>${s.m}, ${s.n} manager:</b> "${s.d} Common products: ${s.p}. Would you like to join, or find another sector?"<div class="pad"><button class="b" data-j="${i}">Join ${s.n}</button><button class="b s" id="other">Find another sector</button></div></div>`}
+function role(i){const s=S[G.sec],n=s.r.split(",")[i],on=G.team.includes(i);$("#rd").innerHTML=`<b>${EM[i]} ${n}</b><br>What they do: Contributes ${n.toLowerCase()} expertise to the ${s.n} team.<br>Key skill: ${SK[i%6]}<br>Education: ${ED[i%4]}<br><span class="note">Placeholder text. Replace with the role descriptions from the slide deck.</span><br><button class="b" data-add="${i}" ${on||G.team.length>=6?"disabled":""}>${on?"ADDED":"ADD TO TEAM"}</button>`}
+document.addEventListener("click",e=>{const t=e.target,c=x=>t.closest(x);
+ if(c("#bl"))walk(-5);if(c("#br"))walk(5);
+ if(c("#play")){G.step="rooms";rg()}
+ if(c("[data-r]"))pickRoom(+c("[data-r]").dataset.r);
+ if(c("#other")){$("#mp").innerHTML="";}
+ if(c("[data-j]")){G.sec=+c("[data-j]").dataset.j;G.team=[];G.step="team";rg()}
+ if(c(".role"))role(+c(".role").dataset.i);
+ if(c("[data-add]")){const i=+c("[data-add]").dataset.add;if(G.team.length<6&&!G.team.includes(i)){G.team.push(i);$("#tc").textContent=`YOUR TEAM: ${G.team.length}/6`;c("[data-add]").parentNode.parentNode.querySelector(`.role[data-i="${i}"]`)?.classList.add("on");role(i);$("#go").disabled=G.team.length<6}}
+ if(c("#go")){G.qi=0;G.sc=[0,0,0,0,0];G.step="quiz";rg()}
+ if(c(".ch")){CS[G.qi][+c(".ch").dataset.c][1].forEach((v,k)=>G.sc[k]+=v);G.team.forEach(i=>G.sc[i%5]+=0.5);G.qi++;G.step=G.qi>2?"end":"quiz";rg()}
+ if(c("#again")){G.step="rooms";rg()}});
+document.addEventListener("mouseover",e=>{const r=e.target.closest(".role"),m=e.target.closest("[data-r]");if(r)role(+r.dataset.i);if(m)pickRoom(+m.dataset.r)});
+document.addEventListener("focusin",e=>{const r=e.target.closest(".role"),m=e.target.closest("[data-r]");if(r)role(+r.dataset.i);if(m)pickRoom(+m.dataset.r)});
+document.addEventListener("keydown",e=>{if(e.key=="Enter"&&G.step=="greet"&&!$("#game").hidden){G.step="rooms";rg()}});
+
+/* ---------- MAP ---------- */
+const C=[["Sussex",1,0],["Passaic",3,0],["Bergen",4,0],["Warren",0,1],["Morris",2,1],["Essex",3,1],["Hudson",4,1],["Hunterdon",0,2],["Somerset",1,2],["Middlesex",2,2],["Union",3,2],["Mercer",1,3],["Monmouth",3,3],["Burlington",2,4],["Ocean",3,4],["Gloucester",0,5],["Camden",1,5],["Atlantic",2,5],["Salem",0,6],["Cumberland",1,6],["Cape May",2,6]];
+const TY=["Internships","Volunteering","Programs","Entry-level Jobs","Mid/High-Level Jobs"],SE=["Pharma / Healthcare","Regulatory","Marine","Detection","Agricultural / Environmental"];
+const M={init:0,data:[],sel:{t:new Set(),s:new Set(),c:new Set()}};
+C.forEach((c,i)=>{for(let k=0;k<2;k++)M.data.push({n:`Sample opportunity in ${c[0]} County #${k+1}`,c:c[0],t:TY[(i+k*2)%5],s:SE[(i*2+k)%5],u:"#",dx:12+k*34,dy:30+k*8})});
+const W=76,H=66,X0=22,Y0=18,pos=c=>[X0+c[1]*(W+4),Y0+c[2]*(H+4)];
+function mapInit(){
+ const box=(g,arr)=>`<fieldset><legend>${g}</legend>${arr.map((a,i)=>`<label><input type="checkbox" data-g="${g[0]}" value="${a}"> ${a}</label>`).join("")}</fieldset>`;
+ $("#filters").innerHTML=box("Type",TY)+box("Sector",SE)+`<details><summary>Counties</summary><fieldset style="max-height:200px;overflow:auto">${C.map(c=>`<label><input type="checkbox" data-g="C" value="${c[0]}"> ${c[0]}</label>`).join("")}</fieldset></details><button class="b s" id="clr">Clear filters</button>`;
+ $("#filters").onchange=e=>{const i=e.target,k={T:"t",S:"s",C:"c"}[i.dataset.g];i.checked?M.sel[k].add(i.value):M.sel[k].delete(i.value);mapDraw()};
+ $("#clr").onclick=()=>{Object.values(M.sel).forEach(s=>s.clear());document.querySelectorAll("#filters input").forEach(i=>i.checked=false);$("#box").hidden=true;mapDraw()};
+ mapDraw()}
+function mapDraw(){const f=M.sel,any=f.t.size+f.s.size+f.c.size>0;
+ const res=M.data.filter(d=>(!f.t.size||f.t.has(d.t))&&(!f.s.size||f.s.has(d.s))&&(!f.c.size||f.c.has(d.c)));
+ const zc=new Set(any?(f.c.size?[...f.c]:res.map(d=>d.c)):[]);
+ let svg="";C.forEach(c=>{const [x,y]=pos(c);svg+=`<g><rect class="cty ${f.c.has(c[0])?"sel":""}" data-cty="${c[0]}" x="${x}" y="${y}" width="${W}" height="${H}" rx="6" tabindex="0" role="button" aria-label="${c[0]} County, toggle filter"/><text class="cl" x="${x+W/2}" y="${y+H-6}">${c[0]}</text></g>`});
+ res.forEach((d,i)=>{const c=C.find(z=>z[0]==d.c),[x,y]=pos(c);svg+=`<g class="pin" data-pin="${M.data.indexOf(d)}" tabindex="0" role="button" aria-label="${d.n}" transform="translate(${x+d.dx},${y+d.dy-18})"><path d="M8 0C3.6 0 0 3.4 0 7.6 0 13 8 22 8 22s8-9 8-14.4C16 3.4 12.4 0 8 0zm0 10a2.6 2.6 0 110-5.2A2.6 2.6 0 018 10z"/></g>`});
+ $("#svg").innerHTML=svg;
+ let vb=[0,0,400,520];if(zc.size){const p=[...zc].map(n=>pos(C.find(c=>c[0]==n)));const x1=Math.min(...p.map(a=>a[0]))-10,y1=Math.min(...p.map(a=>a[1]))-10,x2=Math.max(...p.map(a=>a[0]))+W+10,y2=Math.max(...p.map(a=>a[1]))+H+10,w=Math.max(x2-x1,150),h=Math.max(y2-y1,150);vb=[x1,y1,w,h]}
+ $("#svg").setAttribute("viewBox",vb.join(" "));
+ $("#res").innerHTML=res.length?res.map(d=>`<li>${d.n} (${d.t}, ${d.s}) · <a href="${d.u}">link</a></li>`).join(""):"<li>No matches.</li>"}
+function pinOpen(i){const d=M.data[i];$("#box").hidden=false;$("#box").innerHTML=`<b>${d.n}</b><br>${d.t} · ${d.s}<br><a href="${d.u}" target="_blank" rel="noopener">View offering (placeholder link)</a>`}
+$("#svg").addEventListener("click",e=>{const p=e.target.closest("[data-pin]"),c=e.target.closest("[data-cty]");
+ if(p)return pinOpen(+p.dataset.pin);if(c){const n=c.dataset.cty,k=M.sel.c;k.has(n)?k.delete(n):k.add(n);document.querySelectorAll('#filters input[data-g=C]').forEach(i=>i.checked=k.has(i.value));mapDraw()}});
+$("#svg").addEventListener("keydown",e=>{if(e.key=="Enter"||e.key==" "){e.preventDefault();e.target.dispatchEvent(new MouseEvent("click",{bubbles:true}))}});
+</script></body></html>
