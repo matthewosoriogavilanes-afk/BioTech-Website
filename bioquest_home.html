@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bioquest | Home</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --sky: #38bdf8;
+  --navy: #0f172a;
+  --gray: #64748b;
+  --white: #fff;
+  --line: #cbd5e1;
+  --soft: #f1f5f9;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  font-family: Lato, Arial, sans-serif;
+  color: var(--navy);
+  background: var(--white);
+  line-height: 1.5;
+}
+h1, h2, h3 {
+  font-family: 'Cinzel Decorative', Georgia, serif;
+  margin: .2em 0;
+}
+button, a { font: inherit; cursor: pointer; }
+:focus-visible { outline: 3px solid var(--navy); outline-offset: 2px; }
+.skip {
+  position: absolute;
+  left: -999px;
+}
+.skip:focus {
+  left: 8px;
+  top: 8px;
+  background: #fff;
+  padding: 8px;
+  z-index: 99;
+}
+.btn {
+  display: inline-block;
+  background: var(--sky);
+  color: var(--navy);
+  border: 2px solid var(--navy);
+  border-radius: 999px;
+  padding: .6em 1.4em;
+  font-weight: 700;
+  text-decoration: none;
+  transition: background .15s, color .15s, transform .15s;
+}
+.btn:hover {
+  background: var(--navy);
+  color: #fff;
+  transform: translateY(-1px);
+}
+.btn.alt { background: #fff; }
+.bar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: var(--navy);
+  color: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: .6rem 1.2rem;
+  flex-wrap: wrap;
+  gap: .5rem;
+}
+.bar .brand {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 1.4rem;
+}
+.bar nav { display: flex; gap: .4rem; }
+.tab {
+  background: none;
+  border: 2px solid transparent;
+  color: #fff;
+  padding: .4em 1em;
+  border-radius: 999px;
+  text-decoration: none;
+}
+.tab[aria-current="page"], .tab:hover {
+  background: var(--sky);
+  color: var(--navy);
+}
+.hero {
+  text-align: center;
+  padding: 4.5rem 1.2rem;
+  background: linear-gradient(180deg, #e0f2fe, #fff);
+}
+.hero h1 { font-size: clamp(2.4rem, 8vw, 4.5rem); }
+.hero p {
+  max-width: 640px;
+  margin: 1rem auto 2rem;
+  font-size: 1.2rem;
+  color: var(--navy);
+}
+.wrap {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2rem 1.2rem;
+}
+.cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+.card {
+  border: 2px solid var(--navy);
+  border-radius: 16px;
+  padding: 1.5rem;
+  background: #fff;
+}
+.card svg { width: 56px; height: 56px; }
+.card p { color: var(--gray); }
+@media (max-width: 760px) {
+  .cards { grid-template-columns: 1fr; }
+  .bar { justify-content: center; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { transition-duration: .01ms !important; }
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="bar">
+  <span class="brand">Bioquest</span>
+  <nav aria-label="Main">
+    <a class="tab" href="index.html" aria-current="page">Home</a>
+    <a class="tab" href="game.html">Build-A-Biotech</a>
+    <a class="tab" href="map.html">Map of Opportunities</a>
+  </nav>
+</header>
+
+<main id="main">
+  <section id="home">
+    <div class="hero">
+      <h1>Bioquest</h1>
+      <p>Discover your path in biotechnology through interactive exploration and local opportunity tracking</p>
+      <a class="btn" href="#nav" style="font-size:1.1rem">Get Started</a>
+    </div>
+
+    <div class="wrap" id="nav" tabindex="-1">
+      <h2>Choose your path</h2>
+      <div class="cards">
+        <article class="card">
+          <svg viewBox="0 0 64 64" aria-hidden="true">
+            <path d="M24 6h16M28 6v18L12 54a4 4 0 0 0 4 6h32a4 4 0 0 0 4-6L36 24V6" fill="#e0f2fe" stroke="#0f172a" stroke-width="3" stroke-linejoin="round"/>
+            <path d="M18 44h28" stroke="#38bdf8" stroke-width="6"/>
+          </svg>
+          <h3>Build-A-Biotech Startup</h3>
+          <p>Run a biotech facility, build your dream team and make scenario choices to uncover your biotech profile.</p>
+          <a class="btn" href="game.html">Play the game</a>
+        </article>
+
+        <article class="card">
+          <svg viewBox="0 0 64 64" aria-hidden="true">
+            <path d="M32 60C18 42 12 34 12 24a20 20 0 0 1 40 0c0 10-6 18-20 36z" fill="#38bdf8" stroke="#0f172a" stroke-width="3"/>
+            <circle cx="32" cy="24" r="7" fill="#fff" stroke="#0f172a" stroke-width="3"/>
+          </svg>
+          <h3>Map of Opportunities</h3>
+          <p>Explore New Jersey internships, programs and jobs by county, type and biotech sector.</p>
+          <a class="btn" href="map.html">Open the map</a>
+        </article>
+      </div>
+    </div>
+  </section>
+</main>
+</body>
+</html>
