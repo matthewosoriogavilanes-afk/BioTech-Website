@@ -1,0 +1,73 @@
+/* map */
+.maplay{display:grid;grid-template-columns:260px 1fr;gap:1.5rem}
+fieldset{border:2px solid var(--navy);border-radius:12px;margin:0 0 1rem;padding:.6rem .9rem}
+legend{font-weight:700;padding:0 .4rem}
+fieldset label{display:block;font-size:.95rem}
+.cty{max-height:200px;overflow:auto}
+#nj{width:100%;max-height:78vh;background:#f8fafc;border:2px solid var(--navy);border-radius:16px}
+.c{fill:#e2e8f0;stroke:var(--navy);stroke-width:1.2;stroke-linejoin:round}.c:hover{fill:#bae6fd}.c.on{fill:var(--sky)}
+.pin{cursor:pointer}.pin:focus-visible path{stroke:var(--navy);stroke-width:3}
+.cl{font:700 9px Lato,sans-serif;fill:var(--navy);pointer-events:none;paint-order:stroke;stroke:#fff;stroke-width:2px;text-anchor:middle}
+@media(max-width:760px){.cards,.maplay{grid-template-columns:1fr}.scene{flex-direction:column;align-items:flex-start}.bubble:before{display:none}.spr{width:80px}.roles{gap:.35rem}.role{font-size:.7rem;padding:.4rem .2rem;min-height:66px}.world{aspect-ratio:1/1}.bldg{left:12%;width:76%}.pct{grid-template-columns:1fr 1fr 40px}.floor{grid-template-columns:30px 1fr 1fr}.room{font-size:.8rem;min-height:84px}.stage{padding:.7rem}}
+@media(prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="bar">
+  <span class="brand">Bioquest</span>
+  <nav aria-label="Main">
+    <button class="tab" data-tab="home">Home</button>
+    <button class="tab" data-tab="game">Build-A-Biotech</button>
+    <button class="tab" data-tab="map">Map of Opportunities</button>
+  </nav>
+</header>
+<main id="main">
+<section id="home">
+  <div class="hero">
+    <h1>Bioquest</h1>
+    <p>Discover your path in biotechnology through interactive exploration and local opportunity tracking</p>
+    <button class="btn" id="start" style="font-size:1.1rem">Get Started</button>
+  </div>
+  <div class="wrap" id="nav" tabindex="-1">
+    <h2>Choose your path</h2>
+    <div class="cards">
+      <article class="card">
+        <svg viewBox="0 0 64 64" aria-hidden="true"><path d="M24 6h16M28 6v18L12 54a4 4 0 0 0 4 6h32a4 4 0 0 0 4-6L36 24V6" fill="#e0f2fe" stroke="#0f172a" stroke-width="3" stroke-linejoin="round"/><path d="M18 44h28" stroke="#38bdf8" stroke-width="6"/></svg>
+        <h3>Build-A-Biotech Startup</h3>
+        <p>Run a biotech facility, build your dream team and make scenario choices to uncover your biotech profile.</p>
+        <button class="btn" data-tab="game">Play the game</button>
+      </article>
+      <article class="card">
+        <svg viewBox="0 0 64 64" aria-hidden="true"><path d="M32 60C18 42 12 34 12 24a20 20 0 0 1 40 0c0 10-6 18-20 36z" fill="#38bdf8" stroke="#0f172a" stroke-width="3"/><circle cx="32" cy="24" r="7" fill="#fff" stroke="#0f172a" stroke-width="3"/></svg>
+        <h3>Map of Opportunities</h3>
+        <p>Explore New Jersey internships, programs and jobs by county, type and biotech sector.</p>
+        <button class="btn" data-tab="map">Open the map</button>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section id="game" hidden class="wrap">
+  <h2>Build-A-Biotech Startup</h2>
+  <div id="stage" class="stage th-hub" tabindex="-1" aria-live="polite"></div>
+</section>
+
+<section id="map" hidden class="wrap">
+  <h2>Map of Opportunities</h2>
+  <div class="maplay">
+    <aside aria-label="Filters">
+      <fieldset><legend>Opportunity Type</legend><div id="f-type"></div></fieldset>
+      <fieldset><legend>Sector</legend><div id="f-sector"></div></fieldset>
+      <fieldset><legend>County</legend><div id="f-county" class="cty"></div></fieldset>
+      <button class="btn alt" id="clear">Clear filters</button>
+      <p id="status" role="status" class="note"></p>
+    </aside>
+    <svg id="nj" viewBox="0 0 500 949" role="group" aria-label="Map of New Jersey counties with opportunity pins"></svg>
+  </div>
+</section>
+</main>
+
+<div id="modal" class="modal" hidden role="dialog" aria-modal="true"><div id="mbox"></div></div>
+
+<script>
