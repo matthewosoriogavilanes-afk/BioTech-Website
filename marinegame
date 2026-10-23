@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aquatic - Marine Biostimulant Assessment</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #021226;
+            overflow-x: hidden;
+            user-select: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        #ocean-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .header-pill {
+            background-color: #ffffff;
+            color: #111827;
+            font-family: 'Playfair Display', Georgia, serif;
+            font-weight: 700;
+            border-radius: 999px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .sky-card {
+            background: rgba(152, 196, 251, 0.92);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            border-radius: 28px;
+            box-shadow: 0 20px 50px rgba(0, 25, 60, 0.35);
+        }
+
+        .white-badge {
+            width: 50px;
+            height: 50px;
+            min-width: 50px;
+            min-height: 50px;
+            border-radius: 50%;
+            background-color: #ffffff;
+            color: #122338;
+            font-family: 'Playfair Display', Georgia, serif;
+            font-weight: 700;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.18);
+            transition: transform 0.2s ease, background-color 0.2s ease;
+        }
+
+        .option-group:hover .white-badge {
+            transform: scale(1.08);
+            background-color: #f8fafc;
+        }
+
+        .option-bar {
+            background-color: #38547a;
+            border-radius: 12px;
+            color: #ffffff;
+            line-height: 1.45;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+        }
+
+        .option-group:hover .option-bar {
+            background-color: #2a4263;
+            transform: translateX(3px);
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+        }
+
+        .modal-backdrop {
+            background: rgba(2, 12, 28, 0.8);
+            backdrop-filter: blur(6px);
+        }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-thumb { background: rgba(152, 196, 251, 0.6); border-radius: 3px; }
+    </style>
+</head>
+<body class="text-slate-100 min-h-screen flex flex-col justify-between relative selection:bg-sky-400 selection:text-slate-900">
+
+    <!-- Interactive Canvas Background -->
+    <canvas id="ocean-canvas"></canvas>
+
+    <!-- Main Container Overlay -->
+    <div class="relative z-10 flex flex-col justify-between min-h-screen max-w-4xl mx-auto px-4 py-4 w-full">
+
+        <!-- Top Header & Pill -->
+        <header class="flex flex-col items-center justify-center mb-3">
+            <div class="w-full flex justify-between items-center mb-3 text-xs md:text-sm text-sky-100">
+                <div class="flex items-center gap-2 bg-slate-900/60 px-3.5 py-1.5 rounded-full border border-sky-400/30 shadow-md">
+                    <i class="fa-solid fa-droplet text-sky-300"></i>
+                    <span class="font-medium">Marine Biostimulant Assessment</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button onclick="toggleAudio()" class="flex items-center gap-2 bg-slate-900/60 hover:bg-slate-800 px-3.5 py-1.5 rounded-full border border-sky-400/30 text-sky-200 transition shadow-md">
+                        <i id="sound-icon" class="fa-solid fa-volume-high text-sky-300"></i>
+                        <span id="sound-text" class="hidden sm:inline">Audio On</span>
+                    </button>
+                    <button onclick="openInfoModal()" class="flex items-center gap-1.5 bg-slate-900/60 hover:bg-slate-800 px-3.5 py-1.5 rounded-full border border-sky-400/30 text-sky-200 transition shadow-md">
+                        <i class="fa-solid fa-compass text-sky-300"></i>
+                        <span class="hidden sm:inline">Framework</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- "Aquatic" Header Pill -->
+            <div class="header-pill text-2xl px-12 py-1.5 border border-white text-center transform transition duration-300 hover:scale-105">
+                Aquatic
+            </div>
+        </header>
+
+        <main class="flex-grow flex items-center justify-center my-auto py-2">
+
+            <!-- SCREEN 1: START SCREEN -->
+            <div id="start-screen" class="w-full max-w-2xl text-center sky-card p-6 md:p-10 text-slate-900 shadow-2xl">
+                <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-white/80 text-slate-900 mb-4 border border-white shadow">
+                    <i class="fa-solid fa-water text-3xl text-sky-700"></i>
+                </div>
+                <h1 class="font-serif text-3xl md:text-4xl font-bold text-slate-900 mb-3">
+                    Aquatic Decision Simulator
+                </h1>
+                <p class="text-slate-800 text-sm md:text-base mb-6 leading-relaxed max-w-lg mx-auto font-medium">
+                    Evaluate 5 real-world biotechnology scenarios in ocean kelp extraction, algae host cultivation, regulatory runoff safety, pricing strategy, and public reef ecology sentiment.
+                </p>
+
+                <div class="flex flex-wrap justify-center gap-2 mb-8">
+                    <span class="px-3 py-1 bg-white/80 rounded-full text-xs font-bold text-slate-800 border border-white"><i class="fa-solid fa-bullseye text-sky-700 mr-1"></i> Precision</span>
+                    <span class="px-3 py-1 bg-white/80 rounded-full text-xs font-bold text-slate-800 border border-white"><i class="fa-solid fa-chart-pie text-sky-700 mr-1"></i> Analytical Thinking</span>
+                    <span class="px-3 py-1 bg-white/80 rounded-full text-xs font-bold text-slate-800 border border-white"><i class="fa-solid fa-flask text-sky-700 mr-1"></i> Scientific Curiosity</span>
+                    <span class="px-3 py-1 bg-white/80 rounded-full text-xs font-bold text-slate-800 border border-white"><i class="fa-solid fa-lightbulb text-sky-700 mr-1"></i> Innovation</span>
+                    <span class="px-3 py-1 bg-white/80 rounded-full text-xs font-bold text-slate-800 border border-white"><i class="fa-solid fa-earth-americas text-sky-700 mr-1"></i> Impact Orientation</span>
+                </div>
+
+                <button onclick="startGame()" class="px-10 py-3.5 bg-[#38547a] hover:bg-[#2a4263] text-white font-semibold rounded-full shadow-lg transition duration-200 transform hover:-translate-y-0.5 flex items-center justify-center gap-3 mx-auto">
+                    <span>Begin Assessment</span>
+                    <i class="fa-solid fa-arrow-right text-xs"></i>
+                </button>
+            </div>
+
+            <!-- SCREEN 2: GAMEPLAY CARD -->
+            <div id="game-screen" class="hidden w-full max-w-3xl sky-card p-5 sm:p-8 text-slate-900 shadow-2xl relative">
+                <div class="flex items-center justify-between mb-4 border-b border-slate-900/15 pb-3">
+                    <span class="text-xs font-bold uppercase tracking-wider text-slate-900 bg-white/80 px-3 py-1 rounded-full border border-white" id="scenario-badge">
+                        Scenario 1 of 5
+                    </span>
+                    <div class="flex items-center gap-1.5" id="progress-dots"></div>
+                </div>
+
+                <div class="mb-5 bg-white/60 rounded-2xl p-4 sm:p-5 border border-white/90 shadow-sm">
+                    <div class="flex items-start gap-3">
+                        <div class="bg-[#38547a] text-white p-2.5 rounded-xl text-sm shrink-0 mt-0.5" id="speaker-icon">
+                            <i class="fa-solid fa-user-tie"></i>
+                        </div>
+                        <div>
+                            <h2 class="text-xs font-bold uppercase tracking-wider text-slate-700" id="speaker-title">
+                                Scenario Context
+                            </h2>
+                            <p class="text-slate-900 text-xs sm:text-sm md:text-base leading-relaxed font-semibold mt-1" id="scenario-text">
+                                Loading scenario details...
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Multiple Choice Options -->
+                <div class="space-y-3 sm:space-y-4" id="options-container"></div>
+            </div>
+
+            <!-- SCREEN 3: RESULTS SCREEN -->
+            <div id="results-screen" class="hidden w-full max-w-4xl bg-slate-900/90 backdrop-blur-xl border border-sky-500/30 rounded-3xl p-6 sm:p-8 text-white shadow-2xl">
+                <div class="text-center mb-8">
+                    <div class="inline-flex items-center gap-2 px-4 py-1 rounded-full bg-sky-950 border border-sky-400/30 text-sky-300 text-xs font-semibold tracking-wider uppercase mb-3">
+                        <i class="fa-solid fa-award text-yellow-400"></i> Simulation Complete
+                    </div>
+                    <h2 class="text-2xl sm:text-4xl font-serif font-bold text-white mb-2" id="archetype-title">
+                        Oceanic Innovator
+                    </h2>
+                    <p class="text-slate-300 text-sm sm:text-base max-w-2xl mx-auto leading-relaxed" id="archetype-desc">
+                        Analyzing your decision profile across marine biotechnology operations...
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                    <div class="bg-slate-800/60 rounded-2xl p-5 border border-slate-700/60">
+                        <h3 class="text-sm font-semibold text-sky-300 uppercase tracking-wider mb-4 flex items-center justify-between">
+                            <span>Competency Profile</span>
+                            <span class="text-xs text-slate-400 font-normal">Score</span>
+                        </h3>
+                        <div class="space-y-4" id="competency-bars-container"></div>
+                    </div>
+
+                    <div class="bg-slate-800/60 rounded-2xl p-5 border border-slate-700/60 flex flex-col justify-between">
+                        <div>
+                            <h3 class="text-sm font-semibold text-sky-300 uppercase tracking-wider mb-3 flex items-center gap-2">
+                                <i class="fa-solid fa-brain text-sky-400"></i> Strategic Profile Analysis
+                            </h3>
+                            <p class="text-slate-300 text-sm leading-relaxed mb-4" id="archetype-detailed-analysis">
+                                Loading assessment summary...
+                            </p>
+                        </div>
+                        <div class="bg-slate-900/80 rounded-xl p-3.5 border border-slate-700/50 space-y-2 text-xs">
+                            <div class="flex justify-between text-slate-300">
+                                <span><i class="fa-solid fa-check text-emerald-400 mr-1.5"></i> Primary Competency:</span>
+                                <span class="font-bold text-sky-300" id="top-competency-label">-</span>
+                            </div>
+                            <div class="flex justify-between text-slate-300">
+                                <span><i class="fa-solid fa-compass text-sky-400 mr-1.5"></i> Strategic Focus:</span>
+                                <span class="font-medium text-slate-200" id="strategic-focus-label">-</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-8">
+                    <button onclick="toggleReviewModal()" class="w-full flex items-center justify-between bg-slate-800/40 hover:bg-slate-800/80 p-4 rounded-xl border border-slate-700/50 text-slate-200 transition">
+                        <span class="text-sm font-semibold flex items-center gap-2">
+                            <i class="fa-solid fa-list-check text-sky-400"></i> Review Decision Breakdown (All 5 Scenarios)
+                        </span>
+                        <i id="review-chevron" class="fa-solid fa-chevron-down text-xs text-slate-400"></i>
+                    </button>
+                    <div id="review-container" class="hidden mt-3 space-y-3"></div>
+                </div>
+
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-4 border-t border-slate-800 pt-6">
+                    <button onclick="restartGame()" class="w-full sm:w-auto px-8 py-3 bg-[#38547a] hover:bg-[#2a4263] text-white font-medium rounded-full shadow-lg transition flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-rotate-right text-xs"></i>
+                        <span>Restart Simulation</span>
+                    </button>
+                    <button onclick="shareResults()" class="w-full sm:w-auto px-6 py-3 bg-slate-800 hover:bg-slate-700 text-sky-300 font-medium rounded-full border border-sky-500/30 transition flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-share-nodes text-xs"></i>
+                        <span id="share-text">Share Results</span>
+                    </button>
+                </div>
+            </div>
+
+        </main>
+
+        <footer class="text-center py-2 text-xs text-sky-200/80 font-medium">
+            Aquatic Marine Biotechnology Assessment &bull; Interactive Decision Framework
+        </footer>
+    </div>
+
+    <!-- MODAL 1: FEEDBACK POPOVER -->
+    <div id="feedback-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 modal-backdrop hidden opacity-0 transition-opacity duration-300">
+        <div class="bg-slate-900 border border-sky-500/40 rounded-3xl max-w-lg w-full p-6 text-white shadow-2xl scale-95 transition-transform duration-300" id="feedback-modal-content">
+            <div class="flex items-center justify-between mb-4 border-b border-slate-800 pb-3">
+                <div class="flex items-center gap-2">
+                    <div class="w-9 h-9 rounded-full bg-white text-slate-900 flex items-center justify-center font-bold font-serif text-lg" id="feedback-badge-circle">
+                        A
+                    </div>
+                    <span class="text-sm font-semibold text-slate-200">Decision Recorded</span>
+                </div>
+                <span class="text-xs bg-slate-800 text-slate-300 px-3 py-1 rounded-full border border-slate-700" id="feedback-scenario-num">
+                    Scenario 1
+                </span>
+            </div>
+
+            <div class="mb-4">
+                <div class="text-xs text-slate-400 uppercase tracking-wider mb-2 font-medium">Competency Points Earned:</div>
+                <div class="flex flex-wrap gap-2" id="awarded-points-list"></div>
+            </div>
+
+            <div class="bg-slate-800/80 rounded-xl p-3.5 mb-5 border border-slate-700/60 text-xs sm:text-sm text-slate-300 leading-relaxed" id="feedback-choice-text"></div>
+
+            <button onclick="nextScenario()" class="w-full py-3 bg-[#38547a] hover:bg-[#2a4263] text-white font-semibold rounded-xl shadow-lg transition flex items-center justify-center gap-2">
+                <span>Continue to Next Scenario</span>
+                <i class="fa-solid fa-arrow-right text-xs"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- MODAL 2: FRAMEWORK INFO -->
+    <div id="info-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 modal-backdrop hidden opacity-0 transition-opacity duration-300">
+        <div class="bg-slate-900 border border-sky-500/40 rounded-3xl max-w-lg w-full p-6 text-white shadow-2xl">
+            <div class="flex items-center justify-between mb-4 border-b border-slate-800 pb-3">
+                <h3 class="text-lg font-serif font-bold text-sky-300 flex items-center gap-2">
+                    <i class="fa-solid fa-compass text-sky-400"></i> Leadership Competencies
+                </h3>
+                <button onclick="closeInfoModal()" class="text-slate-400 hover:text-white transition">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+            <div class="space-y-3 text-xs sm:text-sm text-slate-300 max-h-[60vh] overflow-y-auto pr-1">
+                <div class="p-3 bg-slate-800/60 rounded-xl border border-slate-700/50">
+                    <span class="font-bold text-sky-300 block mb-1"><i class="fa-solid fa-bullseye text-sky-400 mr-1"></i> Precision</span>
+                    Procedural temperature/pH controls, standardized degradation assays, unit cost trimming, and transparent guidelines.
+                </div>
+                <div class="p-3 bg-slate-800/60 rounded-xl border border-slate-700/50">
+                    <span class="font-bold text-sky-300 block mb-1"><i class="fa-solid fa-chart-pie text-sky-400 mr-1"></i> Analytical Thinking</span>
+                    Pipeline point mapping, runoff simulation models, controlled field trial yield calculations, and independent data audits.
+                </div>
+                <div class="p-3 bg-slate-800/60 rounded-xl border border-slate-700/50">
+                    <span class="font-bold text-sky-300 block mb-1"><i class="fa-solid fa-flask text-sky-400 mr-1"></i> Scientific Curiosity</span>
+                    Enzyme viability under pressure, host metabolic pathways, natural degradation kinetics, and community panel dialogue.
+                </div>
+                <div class="p-3 bg-slate-800/60 rounded-xl border border-slate-700/50">
+                    <span class="font-bold text-sky-300 block mb-1"><i class="fa-solid fa-lightbulb text-sky-400 mr-1"></i> Innovation</span>
+                    Low-shear extraction methods, smart automated climate storage, chemical binding reformulation, and land-based bioreactors.
+                </div>
+                <div class="p-3 bg-slate-800/60 rounded-xl border border-slate-700/50">
+                    <span class="font-bold text-sky-300 block mb-1"><i class="fa-solid fa-earth-americas text-sky-400 mr-1"></i> Impact Orientation</span>
+                    Local farmer cultivation models, real-time coastal monitoring partnerships, risk-sharing trials, and conservation co-design.
+                </div>
+            </div>
+            <button onclick="closeInfoModal()" class="mt-5 w-full py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-200 text-sm font-medium rounded-xl border border-slate-700 transition">
+                Close
+            </button>
+        </div>
+    </div>
+
+    <script>
+        /* SCENARIO DATA (EXACT MATCH TO PROMPT REQUIREMENTS) */
+        const gameData = [
+            {
+                id: 1,
+                speaker: "Manager",
+                speakerIcon: "fa-user-tie",
+                context: "“We are trying to extract and synthesize a growth enzyme from deep-sea kelp to create a biostimulant that maximizes ocean crop growth. It turns out that while the enzyme yields plant growth significantly, the current process to extract the kelp damages 40% of active proteins, making the yield far less than expected.”",
+                options: [
+                    { letter: "A", text: "Refine temperature and pH controls step-by-step during processing to preserve protein stability", points: { "Precision": 3, "Analytical Thinking": 1 } },
+                    { letter: "B", text: "Study the structural properties of the deep-sea enzymes to understand why pressure changes disrupt their viability", points: { "Scientific Curiosity": 3, "Innovation": 1 } },
+                    { letter: "C", text: "Develop a low-shear extraction method that protects protein structure during harvest", points: { "Innovation": 3, "Precision": 1 } },
+                    { letter: "D", text: "Map protein points throughout the extraction pipeline to identify where damage occurs", points: { "Analytical Thinking": 3, "Scientific Curiosity": 1 } }
+                ]
+            },
+            {
+                id: 2,
+                speaker: "Cultivation Lead",
+                speakerIcon: "fa-vial",
+                context: "“For storing our biostimulant, technicians from our team used large outdoor tanks to cultivate the algae host. However, while storing the batches, we learned that the product loses 50% of its viability within 20 days. How will we be able to prepare large-scale production?”",
+                options: [
+                    { letter: "A", text: "Redesign the storage containers with automated climate controls and bio-preservative formulations to maximize shelf life", points: { "Innovation": 3, "Precision": 1 } },
+                    { letter: "B", text: "Change the cultivation model so the product is grown closer to local ocean farmers, cutting storage times", points: { "Impact Orientation": 3, "Innovation": 1 } },
+                    { letter: "C", text: "Perform daily degradation assays to model when the batch's viability starts to decline under different storage conditions", points: { "Precision": 3, "Analytical Thinking": 1 } },
+                    { letter: "D", text: "Investigate the metabolic pathways of the algae host to know why active compounds break down rapidly in storage", points: { "Scientific Curiosity": 3, "Analytical Thinking": 1 } }
+                ]
+            },
+            {
+                id: 3,
+                speaker: "Regulatory Rep",
+                speakerIcon: "fa-scale-balanced",
+                context: "“Through our environmental safety review, the regulatory agency informed us that they have updated their rules regarding ocean-harvested materials. They explicitly told us that our product needs more proof that it leaves less than 10% of residues in coastal runoff before approval.\n\nRegulatory person: 'With this updated policy, this would slow us down by several years, maybe even 4!'”",
+                options: [
+                    { letter: "A", text: "Design precise runoff simulation models and environmental assays to gather residue evidence required", points: { "Precision": 3, "Analytical Thinking": 1 } },
+                    { letter: "B", text: "Reformulate the compound so it binds more tightly to ocean crops and naturally breaks down in water faster", points: { "Innovation": 3, "Precision": 1 } },
+                    { letter: "C", text: "Work with environmental regulators to establish a real-time coastal monitoring program in place of long delays", points: { "Impact Orientation": 3, "Innovation": 1 } },
+                    { letter: "D", text: "Research the biological degradation rates of the residue in natural marine environments to demonstrate ecological safety", points: { "Scientific Curiosity": 3, "Analytical Thinking": 1 } }
+                ]
+            },
+            {
+                id: 4,
+                speaker: "Marketing Analyst",
+                speakerIcon: "fa-chart-line",
+                context: "“Our product is finally ready to enter the market after long periods of testing. Since the research and development phase, testing, processing, and harvesting was very costly, our final product is priced 20% higher than traditional chemical alternatives.\n\nMarketing Analyst: 'Now people are reluctant to buy it, and we need more buyers to get profit to recuperate from the costs!'”",
+                options: [
+                    { letter: "A", text: "Conduct controlled field trials to calculate crop yield improvements and demonstrate long-term ROI to ocean farmers", points: { "Analytical Thinking": 3, "Impact Orientation": 1 } },
+                    { letter: "B", text: "Create a risk-sharing trial program where farmers pay a reduced rate until harvest goals are successfully met", points: { "Impact Orientation": 3, "Innovation": 1 } },
+                    { letter: "C", text: "Streamline processing steps to reduce total production overhead and bring retail pricing down toward chemical alternatives", points: { "Precision": 3, "Innovation": 1 } },
+                    { letter: "D", text: "Analyze farm purchasing habits to target high-yield aquaculture sectors that are less price-sensitive", points: { "Scientific Curiosity": 3, "Precision": 1 } }
+                ]
+            },
+            {
+                id: 5,
+                speaker: "PR Lead",
+                speakerIcon: "fa-comments",
+                context: "“From our marketing surveys, results show that many responded that they were uncomfortable with using the product because they believe harvesting deep-sea kelp harms coral reefs and ocean ecosystems. How do we change the perspective?”",
+                options: [
+                    { letter: "A", text: "Launch a public transparency campaign demonstrating sustainable off-shore aquaculture harvesting methods", points: { "Precision": 3, "Impact Orientation": 1 } },
+                    { letter: "B", text: "Shift primary sourcing to land-based bioreactors that synthesize the enzyme without harvesting wild kelp beds", points: { "Innovation": 3, "Impact Orientation": 1 } },
+                    { letter: "C", text: "Publish independent ecological impact data showing zero harm to nearby reef systems during harvest operations", points: { "Analytical Thinking": 3, "Precision": 1 } },
+                    { letter: "D", text: "Host community panels with ocean conservation groups to gather feedback and co-design sustainable harvesting guidelines", points: { "Scientific Curiosity": 3, "Impact Orientation": 1 } }
+                ]
+            }
+        ];
+
+        const ARCHETYPES = {
+            "Precision": { title: "Marine Precision Strategist", focus: "Process Optimization & Quality Assurance", desc: "You excel at structured optimization, meticulous controls, and operational rigor.", analysis: "You prioritize procedural controls, standardized daily assays, overhead cost trimming, and verified operational transparency." },
+            "Analytical Thinking": { title: "Analytical Marine Scientist", focus: "Diagnostic Modeling & Empirical Data", desc: "You navigate complex ocean biotechnology challenges through rigorous data and trial metrics.", analysis: "You consistently choose diagnostic protein mapping, runoff simulation modeling, crop ROI calculation, and independent ecological audits." },
+            "Scientific Curiosity": { title: "Curious Marine Researcher", focus: "Biological Kinetics & Discovery", desc: "Driven by deep scientific inquiry, you seek to understand underlying cellular mechanics.", analysis: "Your decisions highlight enzyme structural properties, host metabolic pathways, natural marine degradation rates, and community panel dialogue." },
+            "Innovation": { title: "Oceanic Innovator", focus: "Breakthrough Biosynthesis & Hardware", desc: "You bypass industry bottlenecks by re-engineering physical systems and smart automated storage.", analysis: "You pioneer low-shear harvesting, fast-degrading chemical reformulations, smart automated climate storage, and land-based bioreactors." },
+            "Impact Orientation": { title: "Impact-Driven Aquaculturist", focus: "Coastal Partnerships & Adoption", desc: "You prioritize market adoption, coastal farmer partnerships, and collaborative regulatory monitoring.", analysis: "You focus on real-world impact by bringing production closer to ocean farmers, real-time regulatory monitoring, risk-sharing trials, and conservation co-design." }
+        };
+
+        const COMPETENCY_META = {
+            "Precision": { color: "from-blue-500 to-indigo-600", border: "border-blue-400", bg: "bg-blue-500/20", text: "text-blue-300", icon: "fa-bullseye" },
+            "Analytical Thinking": { color: "from-sky-500 to-cyan-600", border: "border-sky-400", bg: "bg-sky-500/20", text: "text-sky-300", icon: "fa-chart-pie" },
+            "Scientific Curiosity": { color: "from-purple-500 to-violet-600", border: "border-purple-400", bg: "bg-purple-500/20", text: "text-purple-300", icon: "fa-flask" },
+            "Innovation": { color: "from-amber-500 to-orange-600", border: "border-amber-400", bg: "bg-amber-500/20", text: "text-amber-300", icon: "fa-lightbulb" },
+            "Impact Orientation": { color: "from-emerald-500 to-teal-600", border: "border-emerald-400", bg: "bg-emerald-500/20", text: "text-emerald-300", icon: "fa-earth-americas" }
+        };
+
+        let currentScenarioIndex = 0;
+        let userScores = { "Precision": 0, "Analytical Thinking": 0, "Scientific Curiosity": 0, "Innovation": 0, "Impact Orientation": 0 };
+        let userChoicesHistory = [];
+        let isAudioMuted = false;
+        let audioCtx = null;
+
+        function initAudio() {
+            if (!audioCtx) {
+                const AudioCtxClass = window.AudioContext || window.webkitAudioContext;
+                if (AudioCtxClass) audioCtx = new AudioCtxClass();
+            }
+            if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+        }
+
+        function playSound(type) {
+            if (isAudioMuted) return;
+            initAudio();
+            if (!audioCtx) return;
+            try {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                const now = audioCtx.currentTime;
+
+                if (type === 'click') {
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(440, now);
+                    osc.frequency.exponentialRampToValueAtTime(880, now + 0.08);
+                    gain.gain.setValueAtTime(0.12, now);
+                    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.08);
+                    osc.start(now); osc.stop(now + 0.08);
+                } else if (type === 'select') {
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(523.25, now);
+                    osc.frequency.exponentialRampToValueAtTime(659.25, now + 0.12);
+                    gain.gain.setValueAtTime(0.15, now);
+                    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.12);
+                    osc.start(now); osc.stop(now + 0.12);
+                }
+            } catch(e) {}
+        }
+
+        function toggleAudio() {
+            isAudioMuted = !isAudioMuted;
+            document.getElementById('sound-icon').className = isAudioMuted ? 'fa-solid fa-volume-xmark text-slate-400' : 'fa-solid fa-volume-high text-sky-300';
+            document.getElementById('sound-text').innerText = isAudioMuted ? 'Audio Off' : 'Audio On';
+            if (!isAudioMuted) playSound('click');
+        }
+
+        function startGame() {
+            playSound('select');
+            currentScenarioIndex = 0;
+            userScores = { "Precision": 0, "Analytical Thinking": 0, "Scientific Curiosity": 0, "Innovation": 0, "Impact Orientation": 0 };
+            userChoicesHistory = [];
+
+            document.getElementById('start-screen').classList.add('hidden');
+            document.getElementById('results-screen').classList.add('hidden');
+            document.getElementById('game-screen').classList.remove('hidden');
+
+            renderScenario();
+        }
+
+        function renderScenario() {
+            const scenario = gameData[currentScenarioIndex];
+
+            document.getElementById('scenario-badge').innerText = `Scenario ${scenario.id} of 5`;
+            document.getElementById('speaker-title').innerText = `${scenario.speaker} Prompt`;
+            document.getElementById('speaker-icon').innerHTML = `<i class="fa-solid ${scenario.speakerIcon}"></i>`;
+            document.getElementById('scenario-text').innerText = scenario.context;
+
+            document.getElementById('progress-dots').innerHTML = gameData.map((s, idx) => {
+                if (idx < currentScenarioIndex) return `<div class="w-2.5 h-2.5 rounded-full bg-slate-900"></div>`;
+                if (idx === currentScenarioIndex) return `<div class="w-3.5 h-3.5 rounded-full bg-[#38547a] ring-2 ring-white animate-pulse"></div>`;
+                return `<div class="w-2.5 h-2.5 rounded-full bg-slate-900/30"></div>`;
+            }).join('');
+
+            document.getElementById('options-container').innerHTML = scenario.options.map((opt, idx) => `
+                <button onclick="selectOption(${idx})" class="w-full text-left flex items-center gap-3 sm:gap-4 option-group cursor-pointer focus:outline-none rounded-2xl p-0.5 transition">
+                    <div class="white-badge">${opt.letter}</div>
+                    <div class="option-bar flex-grow px-4 py-3.5 sm:px-5 sm:py-4 font-medium text-xs sm:text-sm">
+                        ${opt.text}
+                    </div>
+                </button>
+            `).join('');
+        }
+
+        function selectOption(optionIndex) {
+            playSound('select');
+            const scenario = gameData[currentScenarioIndex];
+            const selectedOpt = scenario.options[optionIndex];
+
+            userChoicesHistory.push({ scenarioId: scenario.id, speaker: scenario.speaker, option: selectedOpt });
+
+            for (let trait in selectedOpt.points) {
+                userScores[trait] += selectedOpt.points[trait];
+            }
+
+            showFeedbackModal(selectedOpt, scenario);
+        }
+
+        function showFeedbackModal(selectedOpt, scenario) {
+            document.getElementById('feedback-badge-circle').innerText = selectedOpt.letter;
+            document.getElementById('feedback-scenario-num').innerText = `Scenario ${scenario.id} of 5`;
+            document.getElementById('feedback-choice-text').innerText = `"${selectedOpt.text}"`;
+
+            document.getElementById('awarded-points-list').innerHTML = Object.entries(selectedOpt.points).map(([trait, pts]) => {
+                const meta = COMPETENCY_META[trait];
+                return `
+                    <div class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl ${meta.bg} ${meta.text} border ${meta.border} text-xs font-semibold">
+                        <i class="fa-solid ${meta.icon}"></i>
+                        <span>+${pts} ${trait}</span>
+                    </div>
+                `;
+            }).join('');
+
+            const modal = document.getElementById('feedback-modal');
+            const content = document.getElementById('feedback-modal-content');
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+                content.classList.remove('scale-95');
+                content.classList.add('scale-100');
+            }, 10);
+        }
+
+        function nextScenario() {
+            playSound('click');
+            const modal = document.getElementById('feedback-modal');
+            const content = document.getElementById('feedback-modal-content');
+            modal.classList.add('opacity-0');
+            content.classList.remove('scale-100');
+            content.classList.add('scale-95');
+
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                currentScenarioIndex++;
+                if (currentScenarioIndex < gameData.length) {
+                    renderScenario();
+                } else {
+                    showResults();
+                }
+            }, 200);
+        }
+
+        function showResults() {
+            document.getElementById('game-screen').classList.add('hidden');
+            document.getElementById('results-screen').classList.remove('hidden');
+
+            let topTrait = "Precision", maxScore = -1;
+            for (let trait in userScores) {
+                if (userScores[trait] > maxScore) {
+                    maxScore = userScores[trait];
+                    topTrait = trait;
+                }
+            }
+
+            const archetype = ARCHETYPES[topTrait];
+
+            document.getElementById('archetype-title').innerText = archetype.title;
+            document.getElementById('archetype-desc').innerText = archetype.desc;
+            document.getElementById('archetype-detailed-analysis').innerText = archetype.analysis;
+            document.getElementById('top-competency-label').innerText = topTrait;
+            document.getElementById('strategic-focus-label').innerText = archetype.focus;
+
+            document.getElementById('competency-bars-container').innerHTML = Object.entries(userScores).map(([trait, pts]) => {
+                const meta = COMPETENCY_META[trait];
+                const percentage = Math.min(100, Math.round((pts / 15) * 100));
+                return `
+                    <div>
+                        <div class="flex justify-between items-center text-xs mb-1 font-medium">
+                            <span class="flex items-center gap-1.5 text-slate-200">
+                                <i class="fa-solid ${meta.icon} ${meta.text}"></i> ${trait}
+                            </span>
+                            <span class="text-sky-300 font-bold">${pts} pts</span>
+                        </div>
+                        <div class="w-full h-2.5 bg-slate-900 rounded-full overflow-hidden border border-slate-700/60 p-0.5">
+                            <div class="h-full bg-gradient-to-r ${meta.color} rounded-full transition-all duration-1000" style="width: ${Math.max(8, percentage)}%"></div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            document.getElementById('review-container').innerHTML = userChoicesHistory.map((item) => `
+                <div class="bg-slate-800/80 rounded-xl p-3.5 border border-slate-700/60 text-xs">
+                    <div class="flex justify-between items-center font-semibold text-sky-300 mb-1">
+                        <span>Scenario ${item.scenarioId}: ${item.speaker}</span>
+                        <span class="bg-slate-900 text-slate-300 px-2 py-0.5 rounded-full border border-slate-700 font-serif">Option ${item.option.letter}</span>
+                    </div>
+                    <p class="text-slate-300 font-medium">"${item.option.text}"</p>
+                </div>
+            `).join('');
+        }
+
+        function toggleReviewModal() {
+            playSound('click');
+            const container = document.getElementById('review-container');
+            const chevron = document.getElementById('review-chevron');
+            if (container.classList.contains('hidden')) {
+                container.classList.remove('hidden');
+                chevron.classList.replace('fa-chevron-down', 'fa-chevron-up');
+            } else {
+                container.classList.add('hidden');
+                chevron.classList.replace('fa-chevron-up', 'fa-chevron-down');
+            }
+        }
+
+        function restartGame() {
+            playSound('click');
+            document.getElementById('results-screen').classList.add('hidden');
+            document.getElementById('start-screen').classList.remove('hidden');
+        }
+
+        function shareResults() {
+            playSound('click');
+            let topTrait = "Precision", maxScore = -1;
+            for (let trait in userScores) {
+                if (userScores[trait] > maxScore) { maxScore = userScores[trait]; topTrait = trait; }
+            }
+            const textToCopy = `Aquatic Marine Assessment Result:\nArchetype: ${ARCHETYPES[topTrait].title} (${topTrait})\nScores: Precision: ${userScores["Precision"]}, Analytical: ${userScores["Analytical Thinking"]}, Curiosity: ${userScores["Scientific Curiosity"]}, Innovation: ${userScores["Innovation"]}, Impact: ${userScores["Impact Orientation"]}`;
+
+            const el = document.createElement('textarea');
+            el.value = textToCopy;
+            document.body.appendChild(el);
+            el.select();
+            document.execCommand('copy');
+            document.body.removeChild(el);
+
+            const shareText = document.getElementById('share-text');
+            shareText.innerText = "Copied to Clipboard!";
+            setTimeout(() => { shareText.innerText = "Share Results"; }, 2500);
+        }
+
+        function openInfoModal() {
+            playSound('click');
+            const modal = document.getElementById('info-modal');
+            modal.classList.remove('hidden');
+            setTimeout(() => modal.classList.remove('opacity-0'), 10);
+        }
+
+        function closeInfoModal() {
+            playSound('click');
+            const modal = document.getElementById('info-modal');
+            modal.classList.add('opacity-0');
+            setTimeout(() => modal.classList.add('hidden'), 200);
+        }
+
+        const canvas = document.getElementById('ocean-canvas');
+        const ctx = canvas.getContext('2d');
+        let width = canvas.width = window.innerWidth;
+        let height = canvas.height = window.innerHeight;
+
+        window.addEventListener('resize', () => {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        });
+
+        const bubbles = Array.from({ length: 40 }, () => ({
+            x: Math.random() * width,
+            y: Math.random() * height,
+            radius: Math.random() * 3 + 1,
+            speedY: Math.random() * 0.8 + 0.3
+        }));
+
+        let frame = 0;
+
+        // Draw Scuba Diver (Top-Left)
+        function drawDiver(ctx, x, y) {
+            ctx.save();
+            ctx.translate(x, y);
+            ctx.rotate(-0.35);
+
+            // Black Wetsuit
+            ctx.fillStyle = '#0a101d';
+            ctx.beginPath();
+            ctx.ellipse(0, 0, 48, 15, 0, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Head & Tank
+            ctx.beginPath();
+            ctx.arc(-48, -2, 12, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.fillStyle = '#1e293b';
+            ctx.fillRect(-22, -18, 38, 9);
+
+            // Legs
+            ctx.fillStyle = '#0a101d';
+            ctx.beginPath();
+            ctx.moveTo(32, -4);
+            ctx.lineTo(72, -13);
+            ctx.lineTo(75, -2);
+            ctx.lineTo(32, 5);
+            ctx.closePath();
+            ctx.fill();
+
+            // Distinctive Red & Black Fins
+            ctx.fillStyle = '#e11d48';
+            ctx.beginPath();
+            ctx.moveTo(72, -13); ctx.lineTo(120, -28); ctx.lineTo(114, -8); ctx.lineTo(75, -2);
+            ctx.closePath(); ctx.fill();
+
+            ctx.fillStyle = '#090d16';
+            ctx.beginPath();
+            ctx.moveTo(72, -13); ctx.lineTo(120, -28); ctx.lineTo(115, -22); ctx.lineTo(73, -9);
+            ctx.closePath(); ctx.fill();
+
+            ctx.fillStyle = '#e11d48';
+            ctx.beginPath();
+            ctx.moveTo(68, 0); ctx.lineTo(116, 16); ctx.lineTo(106, 28); ctx.lineTo(66, 7);
+            ctx.closePath(); ctx.fill();
+
+            ctx.restore();
+        }
+
+        // Draw Branching Coral Reef (Bottom-Right)
+        function drawCoralReef(ctx, w, h) {
+            ctx.save();
+
+            // Magenta/Coral Glow Base
+            const glow = ctx.createRadialGradient(w - 90, h - 90, 10, w - 90, h - 90, 320);
+            glow.addColorStop(0, 'rgba(255, 99, 132, 0.65)');
+            glow.addColorStop(0.5, 'rgba(219, 39, 119, 0.35)');
+            glow.addColorStop(1, 'rgba(0, 0, 0, 0)');
+            ctx.fillStyle = glow;
+            ctx.fillRect(w - 500, h - 450, 500, 450);
+
+            // Reef Rock Base
+            ctx.fillStyle = '#110927';
+            ctx.beginPath();
+            ctx.moveTo(w, h - 200);
+            ctx.quadraticCurveTo(w - 160, h - 180, w - 260, h - 110);
+            ctx.quadraticCurveTo(w - 350, h - 50, w - 420, h);
+            ctx.lineTo(w, h); ctx.closePath(); ctx.fill();
+
+            // Branching Coral Helper
+            function drawBranch(startX, startY, len, angle, branchWidth, depth, color) {
+                ctx.save();
+                ctx.strokeStyle = color;
+                ctx.lineWidth = branchWidth;
+                ctx.lineCap = 'round';
+                ctx.beginPath();
+                ctx.moveTo(startX, startY);
+                const endX = startX + Math.cos(angle) * len;
+                const endY = startY + Math.sin(angle) * len;
+                ctx.lineTo(endX, endY);
+                ctx.stroke();
+
+                if (depth > 0) {
+                    drawBranch(endX, endY, len * 0.72, angle - 0.35, branchWidth * 0.7, depth - 1, color);
+                    drawBranch(endX, endY, len * 0.72, angle + 0.35, branchWidth * 0.7, depth - 1, color);
+                } else {
+                    ctx.fillStyle = '#ff73aa';
+                    ctx.beginPath(); ctx.arc(endX, endY, branchWidth + 1, 0, Math.PI * 2); ctx.fill();
+                }
+                ctx.restore();
+            }
+
+            drawBranch(w - 110, h - 160, 50, -Math.PI / 2 - 0.2, 9, 4, '#ff2e8c');
+            drawBranch(w - 180, h - 120, 55, -Math.PI / 2 + 0.1, 11, 4, '#f43f5e');
+            drawBranch(w - 250, h - 80, 45, -Math.PI / 2 - 0.3, 8, 3, '#ec4899');
+
+            // Animated Anemone Tentacles
+            const anemoneX = w - 150, anemoneY = h - 100;
+            for (let i = 0; i < 22; i++) {
+                const angle = -Math.PI + (i / 22) * Math.PI;
+                const len = 32 + Math.sin(frame * 2 + i) * 5;
+                ctx.strokeStyle = i % 2 === 0 ? '#e879f9' : '#f472b6';
+                ctx.lineWidth = 3.5;
+                ctx.beginPath();
+                ctx.moveTo(anemoneX, anemoneY);
+                const epX = anemoneX + Math.cos(angle) * len + Math.sin(frame * 1.5 + i) * 6;
+                const epY = anemoneY + Math.sin(angle) * len;
+                ctx.lineTo(epX, epY);
+                ctx.stroke();
+            }
+
+            ctx.restore();
+        }
+
+        function renderScene() {
+            frame += 0.012;
+
+            const bgGrad = ctx.createLinearGradient(0, 0, width, height);
+            bgGrad.addColorStop(0, '#0084d1');
+            bgGrad.addColorStop(0.4, '#0062a3');
+            bgGrad.addColorStop(0.75, '#013e73');
+            bgGrad.addColorStop(1, '#011833');
+            ctx.fillStyle = bgGrad;
+            ctx.fillRect(0, 0, width, height);
+
+            // Diver (Top-Left)
+            drawDiver(ctx, 150 + Math.sin(frame * 0.4) * 10, 120 + Math.cos(frame * 0.4) * 6);
+
+            // Coral Reef (Bottom-Right)
+            drawCoralReef(ctx, width, height);
+
+            // Rising Bubbles
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.55)';
+            bubbles.forEach(b => {
+                b.y -= b.speedY;
+                if (b.y < -10) { b.y = height + 10; b.x = Math.random() * width; }
+                ctx.beginPath(); ctx.arc(b.x, b.y, b.radius, 0, Math.PI * 2); ctx.fill();
+            });
+
+            requestAnimationFrame(renderScene);
+        }
+
+        window.addEventListener('load', renderScene);
+    </script>
+</body>
+</html>
