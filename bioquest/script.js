@@ -98,6 +98,10 @@ const spr = (src, l) => `<img class="spr sprite-placeholder" src="${src}" alt="$
 const NATALIE     = spr('assets/sprites/director.png', 'Natalie, facility director');
 const PLAYER      = spr('assets/sprites/character-placeholder.svg', 'You');
 const MANAGER     = spr('assets/sprites/manager.png', 'Manager');
+const PHARMA      = spr('assets/sprites/pharmacist.png', 'Pharmacist');
+const DETECT      = spr('assets/sprites/detection.png', 'idk the name for this yet');
+const AGRI        = spr('assets/sprites/agriculture.png', 'idk name yet');
+//const MARINE      = spr('assets/sprites/marine.png', 'idk name yet2'); (yikes, i forgot to make this guy  T_T   imma add him in later)
 
 const say = (sp, who, txt, extra = '') => `<div class="scene">${sp}<div class="bubble glass"><b>${who}</b><p>${txt}</p>${extra}</div></div>`;
 
