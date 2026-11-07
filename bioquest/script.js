@@ -109,6 +109,16 @@ const DETECT      = spr('assets/sprites/detection.png', 'idk the name for this y
 const AGRI        = spr('assets/sprites/agriculture.png', 'idk name yet');
 //const MARINE      = spr('assets/sprites/marine.png', 'idk name yet2'); (yikes, i forgot to make this guy  T_T   imma add him in later)
 
+//overall variable for sprites that changes based on what sector is chosen
+const PERSON_SPRITE = [
+  PHARMA,//PHARMA
+  MANAGER,//AGRI
+  DETECT,//REGULATORY
+  AGRI//DETECT
+  //,  MARINE//MARINE
+];
+
+
 const say = (sp, who, txt, extra = '') => `<div class="scene">${sp}<div class="bubble glass"><b>${who}</b><p>${txt}</p>${extra}</div></div>`;
 
 const G={sec:0,team:[],tr:[0,0,0,0,0],sourceTraitScores:{},q:0,res:{}};
@@ -512,7 +522,7 @@ const quizAreaIndex = sector => ({
 function quiz(){
   const area=QUIZ_AREAS[quizAreaIndex(G.sec)]||QUIZ_AREAS[0],q=area.scenarios[G.q]||area.scenarios[0];
   draw(SECT[G.sec].th,`<div class="hud"><h3>${area.name}</h3><span class="count">Scenario ${G.q+1}/${area.scenarios.length}</span></div>
-  ${say(MANAGER,SECT[G.sec].m,q.title,`<p>${q.dialogue}</p><div class="ans">${q.answers.map((a,i)=>`<button data-ans="${i}">${String.fromCharCode(65+i)}. ${a[0]}</button>`).join('')}</div>`)}`,SECT[G.sec]);
+  ${say(PERSON_SPRITE[G.sec],SECT[G.sec].m,q.title,`<p>${q.dialogue}</p><div class="ans">${q.answers.map((a,i)=>`<button data-ans="${i}">${String.fromCharCode(65+i)}. ${a[0]}</button>`).join('')}</div>`)}`,SECT[G.sec]);
 }
 
 /* ---- 5. results ---- */
