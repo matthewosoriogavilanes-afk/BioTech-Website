@@ -86,6 +86,12 @@ const SECT=[
  path:'Research or aquaculture technician, then marine scientist, then project lead, then program director.',
  prog:['Rutgers Institute of Marine and Coastal Sciences','Stockton University marine science','Scientific diving training'],
  roles:['Marine Biologist|Studies ocean life and ecosystems.|Fieldwork, species ID|B.S./M.S. in marine biology|40','Marine Natural Products Chemist|Finds medicines in sea organisms.|Chromatography, NMR|Ph.D. in chemistry|04','Aquaculture Technician|Raises fish and shellfish sustainably.|Water chemistry, husbandry|A.S./B.S. in aquaculture|42','Fisheries Scientist|Assesses fish populations.|Statistics, sampling|M.S. in fisheries science|41','Oceanographer|Studies currents and ocean chemistry.|Instruments, modeling|B.S./Ph.D. in oceanography|04','Marine Microbiologist|Studies microbes of the sea.|Sequencing, culturing|Ph.D. in microbiology|40','Coral Restoration Specialist|Grows and restores reefs.|Diving, propagation|B.S. in marine science|20','Marine Biotechnologist|Applies marine organisms to products.|Genetics, bioprocess|M.S. in marine biotechnology|01','Ocean Engineer|Operates underwater robots (ROVs).|Robotics, navigation|B.S. in ocean engineering|12','Shellfish Health Specialist|Monitors oyster and clam disease.|Histology, diagnostics|M.S. in aquatic health|41','Marine Policy Analyst|Shapes ocean conservation rules.|Policy, writing|M.S. in marine policy|31','Marine Mammal Scientist|Studies whales and dolphins.|Observation, data analysis|M.S./Ph.D. in marine mammal science|40','Marine Data Scientist|Analyzes ocean sensor data.|Python, statistics|B.S./M.S. in data science|10','Seafood Safety Inspector|Checks seafood for contaminants.|Testing, regulations|B.S. in food or marine science|43','Ocean Educator|Teaches the public about the sea.|Teaching, outreach|B.S. plus education training|32','Algal Biotechnologist|Grows algae for foods and fuels.|Cultivation, biochemistry|M.S. in biotechnology|01'].map(R),
+ qs:[]},
+{n:'Team HQ',th:'th-hq',c:'#0369a1', 
+ d:'TEAM HQ',
+ qs:[]},
+{n:'Main Research Center',th:'th-cent',c:'#0369a1',
+ d:'RESEARCH CENTER',
  qs:[]}
 ];
 
