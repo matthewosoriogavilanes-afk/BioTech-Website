@@ -179,14 +179,16 @@ function hub(){
   CP.x=50;CP.y=61;campusLast=performance.now();
   const canvas=$('#campus'),player=$('#campus-player');
   
-  // Coordinates corresponding to SECT array order: 
-  // [0: Pharma, 1: Agri, 2: Regulatory, 3: Detection, 4: Marine]
+    // Coordinates corresponding to SECT array order: 
+  // [0: Pharma, 1: Agri, 2: Regulatory, 3: Detection, 4: Marine, 5: Team HQ, 6: Main Research Center]
   const hotspots=[
     {x:19,y:29}, // 0: Pharma / Healthcare
     {x:81,y:28}, // 1: Agricultural & Environmental
     {x:26,y:55}, // 2: Regulatory Science
     {x:80,y:56}, // 3: Detection (Middle Right)
-    {x:59,y:80}  // 4: Marine (Bottom Right)
+    {x:59,y:80},  // 4: Marine (Bottom Right)
+    {x:20,y:80},  // 5: Team HQ (Bottom Left)
+    {x:55,y:25}  // 6: Main Research Center (Up Middle)
   ];
   
   const updateNear=()=>{
